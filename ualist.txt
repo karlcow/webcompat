@@ -1,0 +1,16 @@
+# List of User-Agent Strings used for testing
+# The list is not meant to be exhaustive.
+# It helps to have handy the last version of the browsers UA.
+# Apple
+iphone: 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3'
+# ipad: ''
+# Blackberry
+# Opera 
+omoband: 'Opera/12.02 (Android 4.1; Linux; Opera Mobi/ADR-1111101157; U; en-US) Presto/2.9.201 Version/12.02' 
+ominand: 'Opera/9.80 (Android; Opera Mini/7.29530/27.1407; U; en) Presto/2.8.119 Version/11.10'
+# opera mobile blink?
+# Mozilla
+mozdsk: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:23.0) Gecko/20100101 Firefox/23.0'
+mozfirand: 'Mozilla/5.0 (Android; Mobile; rv:18.0) Gecko/18.0 Firefox/18.0'
+mozfos: 'Mozilla/5.0 (Mobile; rv:18.1) Gecko/18.1 Firefox/18.1'
+# Google
