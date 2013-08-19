@@ -2,7 +2,7 @@
 # Script to add a UA override to B2G
 # Based on Dave Hyland's script https://gist.github.com/2656232
 # Based on Lawrence Mandel's script https://gist.github.com/lmandel/4291503
-# Put at https://github.com/karlcow/webcompat/moz/mozua.sh
+# Put at https://github.com/karlcow/webcompat/blob/master/moz/mozua.sh
 # Options:
 #   remove - removes the override
 # Usage:
@@ -26,7 +26,7 @@ if [ $# != 2 ]; then
     echo "    mozua.sh list   all"
     echo "==============================="
     echo "Improve it!"
-    echo "https://github.com/karlcow/webcompat/moz/mozua.sh"
+    echo "https://github.com/karlcow/webcompat/blob/master/moz/mozua.sh"
     exit 1
 fi
 
