@@ -37,20 +37,20 @@ adb pull ${REMOTE_USER_JS} ${LOCAL_USER_JS}
 
 
 # remove a ua from the list
-if [ ${1} == "remove" ]
+if [ ${1} = "remove" ]
 then
     echo "Removing UA override for ${2}"
     ua=""
 # add a ua to the list
-elif [ ${1} == "add" ]
+elif [ ${1} = "add" ]
 then
     echo "Adding fennec UA override for ${2}"
     ua=fennec
 # list domains in the list
-elif [ ${1} == "list" ]
+elif [ ${1} = "list" ]
 then
     # if all list everything and quit. no need to reboot
-    if [ ${2} == "all" ]
+    if [ ${2} = "all" ]
     then
         echo "Listing every domains"
         grep general.useragent.override ${LOCAL_USER_JS} | sed -e 's/^pref.*override\.\(.*\)", .* bug \(.*\)/\2 \1/'
