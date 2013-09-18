@@ -11,9 +11,10 @@
 #   ./mozua.sh list example
 
 LOCAL_USER_JS=/tmp/user.js
+LOCAL_ORIG_USER_JS=/tmp/orig-user.js
 PROFILE_DIR=/system/b2g/defaults/pref
 REMOTE_USER_JS=${PROFILE_DIR}/user.js
-ORIGINAL_PREF_URL=https://raw.github.com/mozilla-b2g/gaia/master/build/ua-override-prefs.js
+ORIGINAL_PREF_URL='https://raw.github.com/mozilla-b2g/gaia/master/build/ua-override-prefs.js'
 
 # explaining the command
 if [ $# != 2 ]; then
@@ -26,6 +27,7 @@ if [ $# != 2 ]; then
     echo "    mozua.sh remove all         # It removes everything"
     echo "    mozua.sh list   example"
     echo "    mozua.sh list   all"
+    echo "    mozua.sh reset  all         # It restarts from scratch"
     echo "==============================="
     echo "Improve it!"
     echo "https://github.com/karlcow/webcompat/blob/master/moz/mozua.sh"
@@ -33,10 +35,9 @@ if [ $# != 2 ]; then
 fi
 
 # remove any previous files
-rm -f ${LOCAL_USER_JS}
+rm -f ${LOCAL_USER_JS} ${LOCAL_USER_JS}.tmp ${LOCAL_ORIG_USER_JS}
 # pull from the device to a local tmp directory
 adb pull ${REMOTE_USER_JS} ${LOCAL_USER_JS}
-
 
 # remove a ua from the list
 if [ ${1} == "remove" ]
@@ -44,7 +45,7 @@ then
     # if all remove everything
     if [ ${2} == "all" ]
     then
-        echo "Removing every UA domains override. @@option for recreating@@"
+        echo "Removing every UA domains override."
         grep -v 'pref("general.useragent.override.' ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
     # if pattern foo list everything matching foo and quit.
     else
@@ -77,6 +78,15 @@ then
     fi
     # no need to reboot, we just quit
     exit 1
+# reset to the original list
+elif [ ${1} == "reset" ]
+then
+    # Fetching the current original list
+    # !!!! this will brick more or less the device !!!!
+    #echo "Reset to the current production UA override list"
+    #curl -o ${LOCAL_ORIG_USER_JS} ${ORIGINAL_PREF_URL}
+    # We should test first if the file has been created
+    #cp ${LOCAL_ORIG_USER_JS} ${LOCAL_USER_JS}.tmp
 # avoiding surprises
 else
     echo "Unknown command: ${1}"
