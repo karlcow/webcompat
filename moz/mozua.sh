@@ -40,10 +40,10 @@ rm -f ${LOCAL_USER_JS} ${LOCAL_USER_JS}.tmp ${LOCAL_ORIG_USER_JS}
 adb pull ${REMOTE_USER_JS} ${LOCAL_USER_JS}
 
 # remove a ua from the list
-if [ ${1} == "remove" ]
+if [ ${1} = "remove" ]
 then
     # if all remove everything
-    if [ ${2} == "all" ]
+    if [ ${2} = "all" ]
     then
         echo "Removing every UA domains override."
         grep -v 'pref("general.useragent.override.' ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
@@ -55,7 +55,7 @@ then
         grep -v ${2} ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
     fi
 # add a ua to the list
-elif [ ${1} == "add" ]
+elif [ ${1} = "add" ]
 then
     # adding fennec. Probably would be to have more options.
     echo "Adding fennec UA override for ${2}"
@@ -64,10 +64,10 @@ then
     ua=fennec
     echo 'pref("general.useragent.override.'${2}'", "\Mobile#(Android; Mobile");' >> ${LOCAL_USER_JS}.tmp
 # list domains in the list
-elif [ ${1} == "list" ]
+elif [ ${1} = "list" ]
 then
-    # if all list everything
-    if [ ${2} == "all" ]
+    # if all list everything and quit. no need to reboot
+    if [ ${2} = "all" ]
     then
         echo "Listing every domains"
         grep general.useragent.override ${LOCAL_USER_JS} | sed -e 's/^pref.*override\.\(.*\)", .* bug \(.*\)/\2 \1/'
@@ -79,7 +79,7 @@ then
     # no need to reboot, we just quit
     exit 1
 # reset to the original list
-elif [ ${1} == "reset" ]
+elif [ ${1} = "reset" ]
 then
     # Fetching the current original list
     # !!!! this will brick more or less the device !!!!
