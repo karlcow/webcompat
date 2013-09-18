@@ -13,6 +13,7 @@
 LOCAL_USER_JS=/tmp/user.js
 PROFILE_DIR=/system/b2g/defaults/pref
 REMOTE_USER_JS=${PROFILE_DIR}/user.js
+ORIGINAL_PREF_URL=https://raw.github.com/mozilla-b2g/gaia/master/build/ua-override-prefs.js
 
 # explaining the command
 if [ $# != 2 ]; then
@@ -22,6 +23,7 @@ if [ $# != 2 ]; then
     echo "This program:-"
     echo "    mozua.sh add    example.com"
     echo "    mozua.sh remove example.com"
+    echo "    mozua.sh remove all         # It removes everything"
     echo "    mozua.sh list   example"
     echo "    mozua.sh list   all"
     echo "==============================="
@@ -39,37 +41,46 @@ adb pull ${REMOTE_USER_JS} ${LOCAL_USER_JS}
 # remove a ua from the list
 if [ ${1} == "remove" ]
 then
-    echo "Removing UA override for ${2}"
-    ua=""
+    # if all remove everything
+    if [ ${2} == "all" ]
+    then
+        echo "Removing every UA domains override. @@option for recreating@@"
+        grep -v 'pref("general.useragent.override.' ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
+    # if pattern foo list everything matching foo and quit.
+    else
+        # removing a specific domain
+        echo "Removing UA override for ${2}"
+        # Removing the matching UA
+        grep -v ${2} ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
+    fi
 # add a ua to the list
 elif [ ${1} == "add" ]
 then
+    # adding fennec. Probably would be to have more options.
     echo "Adding fennec UA override for ${2}"
+    # we should probably instead trying to test and then add.
+    grep -v ${2} ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
     ua=fennec
+    echo 'pref("general.useragent.override.'${2}'", "\Mobile#(Android; Mobile");' >> ${LOCAL_USER_JS}.tmp
 # list domains in the list
 elif [ ${1} == "list" ]
 then
-    # if all list everything and quit. no need to reboot
+    # if all list everything
     if [ ${2} == "all" ]
     then
         echo "Listing every domains"
         grep general.useragent.override ${LOCAL_USER_JS} | sed -e 's/^pref.*override\.\(.*\)", .* bug \(.*\)/\2 \1/'
-        exit 1
-    # if pattern foo list everything matching foo and quit.
+    # if pattern foo list everything matching foo
     else
         echo "Listing domain matching ${2}"
         grep general.useragent.override ${LOCAL_USER_JS} | grep -i ${2} | sed -e 's/^pref.*override\.\(.*\)", .* bug \(.*\)/\2 \1/'
-        exit 1
     fi
+    # no need to reboot, we just quit
+    exit 1
 # avoiding surprises
 else
     echo "Unknown command: ${1}"
     exit 1
-fi
-grep -v ${2} ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
-if [ "${ua}" != "" ]
-then
-    echo 'pref("general.useragent.override.'${2}'", "\Mobile#(Android; Mobile");' >> ${LOCAL_USER_JS}.tmp
 fi
 
 set -x
