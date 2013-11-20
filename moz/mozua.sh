@@ -16,6 +16,8 @@ PROFILE_DIR=/system/b2g/defaults/pref
 REMOTE_USER_JS=${PROFILE_DIR}/user.js
 ORIGINAL_PREF_URL='https://raw.github.com/mozilla-b2g/gaia/master/build/ua-override-prefs.js'
 
+echo "FOR UA override on Firefox OS 1.0, 1.1"
+echo "UA override on Firefox OS 1.2+ has a different mechanism"
 # explaining the command
 if [ $# != 2 ]; then
     echo ""
