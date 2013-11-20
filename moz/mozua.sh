@@ -83,7 +83,8 @@ elif [ ${1} = "reset" ]
 then
     # Fetching the current original list
     # !!!! this will brick more or less the device !!!!
-    #echo "Reset to the current production UA override list"
+    echo "NOT WORKING YET - Reset to the current production UA override list"
+    exit 1
     #curl -o ${LOCAL_ORIG_USER_JS} ${ORIGINAL_PREF_URL}
     # We should test first if the file has been created
     #cp ${LOCAL_ORIG_USER_JS} ${LOCAL_USER_JS}.tmp
