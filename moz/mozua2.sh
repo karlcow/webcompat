@@ -71,11 +71,11 @@ function stop {
 function pushtodevice {
     # Upload the new prefs
     echo "Pushing to device"
-    # set -x
-    # adb shell mount -o rw,remount /system
-    # adb push ${LOCAL_USER_JS}.tmp ${REMOTE_USER_JS}
-    # adb shell mount -o ro,remount /system
-    # restart
+    set -x
+    adb shell mount -o rw,remount /system
+    adb push ${LOCAL_USER_JS}.tmp ${REMOTE_USER_JS}
+    adb shell mount -o ro,remount /system
+    restart
 }
 
 function restart {
