@@ -17,7 +17,7 @@ open:
 	| sed -E 's,^([0-9]+)\,"(....-..-..).*"\,"(.*)",* [https://bugzilla.mozilla.org/show_bug.cgi?id=\1 \3] \2,'
 
 closed:
-	cat $(CLOSED) | $(CLEANDATA) \
+	cat $(CLOSED) | sort -t"," -k2 | $(CLEANDATA) \
 	| sed -E 's,^([0-9]+)\,"(....-..-..).*"\,"(.*)"\,"(.*)",* [https://bugzilla.mozilla.org/show_bug.cgi?id=\1 \3] \2 \4,' | grep -v meta
 
 feed:
