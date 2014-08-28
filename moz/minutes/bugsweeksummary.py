@@ -13,7 +13,7 @@ import json
 import sys
 
 WIKI_TEMPLATE = '''
-== Topic: Web Compatibility Progress ==
+== Web Compatibility Progress ==
 === FIXED (no DUPLICATE) ===
 
 {fixed_bugs}
