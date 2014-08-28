@@ -65,7 +65,7 @@ def build_uri(bugtype, datespan):
         fields=URL_FIELDS)
 
 
-def bugs_request(bugtype, datespan=DAYS):
+def bugs_request(bugtype, datespan):
     '''return a JSON object with the list of bugs
     default time span is one week'''
     url = build_uri(bugtype, datespan)
@@ -97,19 +97,23 @@ def wiki_markup(bug):
     return markup
 
 
-def main():
-    '''core program'''
+def summary(datespan=DAYS):
     # New bugs
-    openbugs = json.loads(bugs_request('open', DAYS))['bugs']
+    openbugs = json.loads(bugs_request('open', datespan))['bugs']
     markupo = '\n'.join(sorted([wiki_markup(bug) for bug in openbugs]))
     # Fixed bugs
-    fixedbugs = json.loads(bugs_request('fixed', DAYS))['bugs']
+    fixedbugs = json.loads(bugs_request('fixed', datespan))['bugs']
     markupf = '\n'.join(sorted([wiki_markup(bug) for bug in fixedbugs]))
     # Printing the text
-    print WIKI_TEMPLATE.format(
+    return WIKI_TEMPLATE.format(
         fixed_bugs=markupf,
         open_bugs=markupo
         )
+
+
+def main():
+    '''core program'''
+    print summary(DAYS)
 
 
 if __name__ == "__main__":
