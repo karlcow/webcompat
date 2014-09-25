@@ -39,11 +39,23 @@ def extract_minutes(raw_content):
     return content
 
 
+def convert_minutes(content, txt_format='mw'):
+    '''Convert the minutes in the appropriate format.
+
+    Input is Multimarkdown
+    * mw is MediaWiki (available)
+    * html for HTML (reserved)
+    * pdf for PDF (reserved)
+    '''
+    pass
+
+
 def main():
     '''core program'''
     # Fetch the content online
     raw_content = etherpad_content(SERVER_URL, 'webcompat', 'txt')
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(raw_content)
+
 if __name__ == "__main__":
     sys.exit(main())
