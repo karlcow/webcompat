@@ -76,7 +76,8 @@ def bugs_request(bugtype, datespan):
 def wiki_markup(bug):
     '''output the Mediawiki markup for Web Compatibility'''
     # Clean up the square brackets to not interfere with wiki links
-    clean_summary = bug['summary'].replace('[', '(').replace(']', ')')
+    bug_summary = bug['summary'].encode('utf-8')
+    clean_summary = bug_summary.replace('[', '(').replace(']', ')')
     # Common markup
     generic_markup = '{component} [{bugid_url}{id} {summary}]'.format(
         component=bug['component'],
