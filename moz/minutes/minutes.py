@@ -23,6 +23,19 @@ import requests
 WIKI_TEMPLATE = '''== Minutes =='''
 URL = 'https://etherpad.mozilla.org/ep/pad/export/webcompat/latest?format=txt'
 SERVER_URL = 'https://etherpad.mozilla.org'
+STOPLINE = '===========DO NOT REMOVE THIS LINE==========='
+TESTFILE = '''
+
+Meeting: Mobile Web Meeting Compatibility
+Date: September 30, 2014 - 13:00 UTC
+Minutes: https://wiki.mozilla.org/Compatibility/Mobile/2014-09-30
+
+La vie est un 川 tranquille.
+
+===========DO NOT REMOVE THIS LINE===========
+
+we do not want that.
+'''
 
 
 def etherpad_content(server_uri, pad_name, pad_format='txt'):
