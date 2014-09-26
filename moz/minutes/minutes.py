@@ -16,8 +16,9 @@ https://etherpad.mozilla.org/ep/pad/export/webcompat/latest?format=txt
 4. Convert the text to the appropriate format
 """
 
-import requests
 import sys
+
+import requests
 
 WIKI_TEMPLATE = '''== Minutes =='''
 URL = 'https://etherpad.mozilla.org/ep/pad/export/webcompat/latest?format=txt'
@@ -30,7 +31,7 @@ def etherpad_content(server_uri, pad_name, pad_format='txt'):
                                                            pad_name,
                                                            pad_format)
     content = requests.get(url)
-    return content.text
+    return content.text, content.encoding
 
 
 def extract_minutes(raw_content):
