@@ -51,7 +51,7 @@ def etherpad_content(server_uri, pad_name, pad_format='txt'):
 
 
 def extract_minutes(raw_content):
-    '''Parse the minutes from the raw content.
+    '''Separate the metadata and the minutes from the raw content.
 
     It creates a dictionary of metanames and text.
     '''
@@ -84,11 +84,31 @@ def extract_minutes(raw_content):
     return content
 
 
+def parse_minutes(raw_minutes):
+    '''Parse the minutes and structure them to be ready to export.
+
+    It will return a structured format ready to be converted.
+    Example:
+
+    ## Demo for example.com (arthur)
+    We have an issue about example.com.
+    arthur: fish is not fresh.
+    chloe: catch more.
+
+    ## Holiday (paul)
+
+    amir: life is too short.
+    akira: Let's make it big.
+    '''
+    parsed_minutes = {}
+    return parsed_minutes
+
+
 def convert_minutes(content, txt_format='mw'):
     '''Convert the minutes in the appropriate format.
 
     Input is Multimarkdown
-    * mw is MediaWiki (available)
+    * mw is MediaWiki (available and default)
     * html for HTML (reserved)
     * pdf for PDF (reserved)
     '''
