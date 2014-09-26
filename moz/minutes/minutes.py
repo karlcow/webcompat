@@ -16,6 +16,7 @@ https://etherpad.mozilla.org/ep/pad/export/webcompat/latest?format=txt
 4. Convert the text to the appropriate format
 """
 
+import re
 import sys
 
 import requests
@@ -31,6 +32,8 @@ Date: September 30, 2014 - 13:00 UTC
 Minutes: https://wiki.mozilla.org/Compatibility/Mobile/2014-09-30
 
 La vie est un 川 tranquille.
+
+Pourquoi pas.
 
 ===========DO NOT REMOVE THIS LINE===========
 
@@ -48,11 +51,36 @@ def etherpad_content(server_uri, pad_name, pad_format='txt'):
 
 
 def extract_minutes(raw_content):
-    '''Extract the minutes from the raw content.'''
+    '''Parse the minutes from the raw content.
+
+    It creates a dictionary of metanames and text.
+    '''
+    # Initializing
     content = {}
+    textlines = []
+    metadata = re.compile(ur'^([^ .]+): (.*)$', re.IGNORECASE)
+    METAFLAG = False
+    CONTENTFLAG = False
+    # going through the text
     for line in raw_content.split('\n'):
+        # We stop when reaching the stopline
         if line == STOPLINE:
             break
+        # Ignoring eventual blank lines at the start
+        if line == '' and not METAFLAG and not CONTENTFLAG:
+            pass
+        # Processing meta
+        elif line != '' and not CONTENTFLAG:
+            METAFLAG = True
+            metaname, metacontent = re.findall(metadata, line)[0]
+            content[metaname] = metacontent
+        # reached the blank line in between meta and content
+        elif line == '' and not CONTENTFLAG:
+            METAFLAG = False
+            CONTENTFLAG = True
+        elif CONTENTFLAG:
+            textlines.append(line)
+    content['text'] = '\n'.join(textlines)
     return content
 
 
@@ -73,6 +101,7 @@ def main():
     # raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(TESTFILE)
+    print md_content
 
 if __name__ == "__main__":
     sys.exit(main())
