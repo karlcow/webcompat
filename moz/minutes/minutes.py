@@ -99,7 +99,39 @@ def parse_minutes(raw_minutes):
 
     It will return a structured format ready to be converted.
     '''
+    # Initializing
+    FIRSTLINE = False
+    DESCRIPTION = False
     parsed_minutes = {}
+    topicmatch = re.compile(ur'^##\s*(.*)\s*\((.*)\)\s*')
+    personmatch = re.compile(ur'^([^: .]+):\s(.*)')
+    # removing leading and trailing spaces
+    raw_minutes = raw_minutes.strip()
+    # going through the text
+    for line in raw_minutes.split('\n'):
+        m = re.match(topicmatch, line)
+        if m:
+            print('-'*80)
+            topic, owner = m.group(1).strip(), m.group(2).strip()
+            print '> topic: %s\n> owner: %s' % (topic, owner)
+            description = ''
+            FIRSTLINE = True
+            DESCRIPTION = True
+        else:
+            m = re.match(personmatch, line)
+            if not m and DESCRIPTION:
+                description += line
+                print '[ ', line
+            elif m and FIRSTLINE:
+                speaker_text = ''
+                speaker_name, speaker_text = m.group(1), m.group(2)
+                print 'speaker(%s): %s' % (speaker_name, speaker_text)
+                FIRSTLINE = False
+                DESCRIPTION = False
+            else:
+                speaker_text += line
+                print '... %s' % (line)
+                FIRSTLINE = True
     return parsed_minutes
 
 
@@ -121,6 +153,7 @@ def main():
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(TESTFILE)
     print md_content
+    parse_minutes(md_content['text'])
 
 if __name__ == "__main__":
     sys.exit(main())
