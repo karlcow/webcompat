@@ -31,13 +31,21 @@ Meeting: Mobile Web Meeting Compatibility
 Date: September 30, 2014 - 13:00 UTC
 Minutes: https://wiki.mozilla.org/Compatibility/Mobile/2014-09-30
 
-La vie est un 川 tranquille.
 
-Pourquoi pas.
+##　川 for example.com (arthur)
+We have an issue about example.com.
+arthur: fish is not fresh.
+chloe: catch more.
+
+## Holiday (あきら)
+
+amir: life is too short.
+akira: Let's make it big.
 
 ===========DO NOT REMOVE THIS LINE===========
 
 we do not want that.
+
 '''
 
 
@@ -88,17 +96,6 @@ def parse_minutes(raw_minutes):
     '''Parse the minutes and structure them to be ready to export.
 
     It will return a structured format ready to be converted.
-    Example:
-
-    ## Demo for example.com (arthur)
-    We have an issue about example.com.
-    arthur: fish is not fresh.
-    chloe: catch more.
-
-    ## Holiday (paul)
-
-    amir: life is too short.
-    akira: Let's make it big.
     '''
     parsed_minutes = {}
     return parsed_minutes
