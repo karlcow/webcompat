@@ -67,28 +67,25 @@ def extract_minutes(raw_content):
     content = {}
     textlines = []
     metadata = re.compile(ur'^([^ .]+): (.*)$', re.IGNORECASE)
-    METAFLAG = False
     CONTENTFLAG = False
+    # removing the blank lines at the start and the bottom
+    raw_content = raw_content.strip()
     # going through the text
     for line in raw_content.split('\n'):
         # We stop when reaching the stopline
         if line == STOPLINE:
             break
-        # Ignoring eventual blank lines at the start
-        if line == '' and not METAFLAG and not CONTENTFLAG:
-            pass
         # Processing meta
-        elif line != '' and not CONTENTFLAG:
-            METAFLAG = True
+        if line != '' and not CONTENTFLAG:
             metaname, metacontent = re.findall(metadata, line)[0]
             content[metaname] = metacontent
         # reached the blank line in between meta and content
         elif line == '' and not CONTENTFLAG:
-            METAFLAG = False
             CONTENTFLAG = True
         elif CONTENTFLAG:
             textlines.append(line)
-    content['text'] = '\n'.join(textlines)
+    # Aggregate the text and remove leading and trailing spaces
+    content['text'] = '\n'.join(textlines).strip()
     return content
 
 
