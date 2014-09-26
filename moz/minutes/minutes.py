@@ -49,7 +49,10 @@ def etherpad_content(server_uri, pad_name, pad_format='txt'):
 
 def extract_minutes(raw_content):
     '''Extract the minutes from the raw content.'''
-    content = raw_content
+    content = {}
+    for line in raw_content.split('\n'):
+        if line == STOPLINE:
+            break
     return content
 
 
@@ -67,9 +70,9 @@ def convert_minutes(content, txt_format='mw'):
 def main():
     '''core program'''
     # Fetch the content online
-    raw_content = etherpad_content(SERVER_URL, 'webcompat', 'txt')
+    # raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
     # Extract the Multimarkdon part of the body
-    md_content = extract_minutes(raw_content)
+    md_content = extract_minutes(TESTFILE)
 
 if __name__ == "__main__":
     sys.exit(main())
