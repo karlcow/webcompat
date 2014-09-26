@@ -34,12 +34,17 @@ Minutes: https://wiki.mozilla.org/Compatibility/Mobile/2014-09-30
 
 ##　川 for example.com (arthur)
 We have an issue about example.com.
+It would be cool to be able to solve it quickly: See: blah
+http://www.example.com/
 arthur: fish is not fresh.
-chloe: catch more.
+What about whales?
+Do We need more?
+chloe: catch more fish not whales.
 
 ## Holiday (あきら)
 
 amir: life is too short.
+But we never know. We might learn something.
 akira: Let's make it big.
 
 ===========DO NOT REMOVE THIS LINE===========
