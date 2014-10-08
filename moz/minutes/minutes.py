@@ -24,7 +24,7 @@ import requests
 WIKI_TEMPLATE = '''== Minutes =='''
 URL = 'https://etherpad.mozilla.org/ep/pad/export/webcompat/latest?format=txt'
 SERVER_URL = 'https://etherpad.mozilla.org'
-STOPLINE = '===========DO NOT REMOVE THIS LINE==========='
+STOPLINE = '===========AGENDA ITEMS ABOVE THIS LINE==========='
 TESTFILE = '''
 
 Meeting: Mobile Web Meeting Compatibility
