@@ -47,7 +47,7 @@ amir: life is too short.
 But we never know. We might learn something.
 akira: Let's make it big.
 
-===========DO NOT REMOVE THIS LINE===========
+===========AGENDA ITEMS ABOVE THIS LINE===========
 
 we do not want that.
 
@@ -94,7 +94,7 @@ def extract_minutes(raw_content):
     return content
 
 
-def parse_minutes(raw_minutes):
+def parse_minutes(raw_minutes, txt_format):
     '''Parse the minutes and structure them to be ready to export.
 
     It will return a structured format ready to be converted.
@@ -102,7 +102,7 @@ def parse_minutes(raw_minutes):
     # Initializing
     FIRSTLINE = False
     DESCRIPTION = False
-    parsed_minutes = {}
+    converted_text = ''
     topicmatch = re.compile(ur'^##\s*(.*)\s*\((.*)\)\s*')
     personmatch = re.compile(ur'^([^: .]+):\s(.*)')
     # removing leading and trailing spaces
@@ -111,9 +111,8 @@ def parse_minutes(raw_minutes):
     for line in raw_minutes.split('\n'):
         m = re.match(topicmatch, line)
         if m:
-            print('-'*80)
-            topic, owner = m.group(1).strip(), m.group(2).strip()
-            print '> topic: %s\n> owner: %s' % (topic, owner)
+            topic = m.group(1).strip(), m.group(2).strip()
+            converted_text += make_topic(topic, txt_format)
             description = ''
             FIRSTLINE = True
             DESCRIPTION = True
@@ -132,18 +131,18 @@ def parse_minutes(raw_minutes):
                 speaker_text += line
                 print '... %s' % (line)
                 FIRSTLINE = True
-    return parsed_minutes
+    return converted_text
 
 
-def convert_minutes(content, txt_format='mw'):
-    '''Convert the minutes in the appropriate format.
-
-    Input is Multimarkdown
-    * mw is MediaWiki (available and default)
-    * html for HTML (reserved)
-    * pdf for PDF (reserved)
-    '''
-    pass
+def make_topic(topic, txt_format='mw'):
+    '''Convert the topic with the text format of choice.'''
+    if txt_format == 'mw':
+        formatted_topic = '== {0} ({1}) ==\n\n'.format(topic[0], topic[1])
+    elif txt_format == 'html':
+        formatted_topic = '''
+<h2>{0} (<span class="owner">{1}</span>)</h2>'''.format(topic[0],
+                                                        topic[1])
+    return formatted_topic
 
 
 def main():
@@ -153,7 +152,8 @@ def main():
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(TESTFILE)
     print md_content
-    parse_minutes(md_content['text'])
+    foo = parse_minutes(md_content['text'], 'html')
+    print foo
 
 if __name__ == "__main__":
     sys.exit(main())
