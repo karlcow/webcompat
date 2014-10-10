@@ -138,7 +138,7 @@ def parse_minutes(raw_minutes, txt_format):
 def make_topic(topic, txt_format='mw'):
     '''Convert the topic with the text format of choice.'''
     if txt_format == 'mw':
-        formatted_topic = '== {0} ({1}) ==\n\n'.format(topic[0], topic[1])
+        formatted_topic = '\n\n== {0} ({1}) =='.format(topic[0], topic[1])
     elif txt_format == 'html':
         formatted_topic = '''
 <h2>{0} (<span class="owner">{1}</span>)</h2>'''.format(topic[0],
@@ -149,10 +149,10 @@ def make_topic(topic, txt_format='mw'):
 def make_description(description, txt_format='mw'):
     '''Convert the description with the text format of choice.'''
     if txt_format == 'mw':
-        formatted_description = "'''{0}'''\n\n".format(description)
+        formatted_description = "\n'''{0}'''\n".format(description)
     elif txt_format == 'html':
         formatted_description = '''
-<p class="description">{0}</p>\n\n'''.format(description)
+<p class="description">{0}</p>'''.format(description)
     return formatted_description
 
 
@@ -177,7 +177,7 @@ def main():
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(TESTFILE)
     print md_content
-    foo = parse_minutes(md_content['text'], 'html')
+    foo = parse_minutes(md_content['text'], 'mw')
     print foo
 
 if __name__ == "__main__":
