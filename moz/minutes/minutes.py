@@ -125,10 +125,9 @@ def parse_minutes(raw_minutes, txt_format):
                     converted_text += make_description(description, txt_format)
                     DESCRIPTION = False
                 speaker_text = ''
-                speaker_name, speaker_text = m.group(1), m.group(2)
-                print 'speaker(%s): %s' % (speaker_name, speaker_text)
+                firstline = m.group(1), m.group(2)
+                converted_text += make_firstline(firstline, txt_format)
                 FIRSTLINE = False
-                DESCRIPTION = False
             else:
                 speaker_text += line
                 print '... %s' % (line)
@@ -155,6 +154,22 @@ def make_description(description, txt_format='mw'):
         formatted_description = '''
 <p class="description">{0}</p>\n\n'''.format(description)
     return formatted_description
+
+
+def make_firstline(firstline, txt_format='mw'):
+    '''Convert the firstline with the text format of choice.'''
+    if txt_format == 'mw':
+        formatted_firstline = "\n* '''{0}''': {1}".format(firstline[0],
+                                                          firstline[1])
+    elif txt_format == 'html':
+        formatted_firstline = '''
+<p class="speaker">
+    <span class="speaker_name>{0}<span>:
+    <span class="speaker_text">{1} '''.format(firstline[0],
+                                              firstline[1])
+    return formatted_firstline
+
+
 def main():
     '''core program'''
     # Fetch the content online
