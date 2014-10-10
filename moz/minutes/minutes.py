@@ -120,8 +120,10 @@ def parse_minutes(raw_minutes, txt_format):
             m = re.match(personmatch, line)
             if not m and DESCRIPTION:
                 description += line
-                print '[ ', line
             elif m and FIRSTLINE:
+                if DESCRIPTION and (description != ''):
+                    converted_text += make_description(description, txt_format)
+                    DESCRIPTION = False
                 speaker_text = ''
                 speaker_name, speaker_text = m.group(1), m.group(2)
                 print 'speaker(%s): %s' % (speaker_name, speaker_text)
@@ -145,6 +147,14 @@ def make_topic(topic, txt_format='mw'):
     return formatted_topic
 
 
+def make_description(description, txt_format='mw'):
+    '''Convert the description with the text format of choice.'''
+    if txt_format == 'mw':
+        formatted_description = "'''{0}'''\n\n".format(description)
+    elif txt_format == 'html':
+        formatted_description = '''
+<p class="description">{0}</p>\n\n'''.format(description)
+    return formatted_description
 def main():
     '''core program'''
     # Fetch the content online
