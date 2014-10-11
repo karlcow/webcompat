@@ -120,7 +120,7 @@ def parse_minutes(raw_minutes, txt_format):
         else:
             m = re.match(personmatch, line)
             if not m and DESCRIPTION:
-                description += line
+                description += '{0} '.format(line)
             elif m and FIRSTLINE:
                 if DESCRIPTION and (description != ''):
                     converted_text += make_description(description, txt_format)
