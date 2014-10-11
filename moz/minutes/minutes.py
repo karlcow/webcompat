@@ -115,7 +115,7 @@ def parse_minutes(raw_minutes, txt_format):
         m = re.match(topicmatch, line)
         if m:
             if not SPEAKER:
-                converted_text += '{0} '.format(speaker_text)
+                converted_text += close_speaker(speaker_text, txt_format)
             topic = m.group(1).strip(), m.group(2).strip()
             converted_text += make_topic(topic, txt_format)
             description = ''
@@ -126,7 +126,7 @@ def parse_minutes(raw_minutes, txt_format):
                 description += '{0} '.format(line)
             elif m:
                 if not FIRSTLINE:
-                    converted_text += '{0} '.format(speaker_text)
+                    converted_text += close_speaker(speaker_text, txt_format)
                 # match on the name + line
                 FIRSTLINE = True
                 SPEAKER = True
@@ -149,7 +149,7 @@ def parse_minutes(raw_minutes, txt_format):
                     SPEAKER = False
                 converted_text += '{0} '.format(line)
     # We need to add the trailing speaker text before returning.
-    converted_text += '{0} '.format(speaker_text)
+    converted_text += close_speaker(speaker_text, txt_format)
     return converted_text
 
 
@@ -182,9 +182,15 @@ def make_firstline(speaker_name, txt_format='mw'):
         formatted_firstline = '''
 <p class="speaker">
     <span class="speaker_name>{0}<span>:'''.format(speaker_name)
-    # <span class="speaker_text">{1} '''.format(firstline[0],
-    #                                           firstline[1])
     return formatted_firstline
+
+
+def close_speaker(speaker_text, txt_format='mw'):
+    '''Convert the speakers line and close them.'''
+    if txt_format == 'mw':
+        return speaker_text
+    elif txt_format == 'html':
+        return " {0}</p>".format(speaker_text)
 
 
 def main():
