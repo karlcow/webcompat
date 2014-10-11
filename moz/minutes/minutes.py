@@ -103,7 +103,9 @@ def parse_minutes(raw_minutes, txt_format):
     # Initializing
     FIRSTLINE = False
     DESCRIPTION = False
+    SPEAKER = False
     converted_text = ''
+    speaker_text = ''
     topicmatch = re.compile(ur'^##\s*(.*)\s*\((.*)\)\s*')
     personmatch = re.compile(ur'^([^: .]+):\s(.*)')
     # removing leading and trailing spaces
@@ -112,32 +114,42 @@ def parse_minutes(raw_minutes, txt_format):
     for line in raw_minutes.split('\n'):
         m = re.match(topicmatch, line)
         if m:
+            if not SPEAKER:
+                converted_text += '{0} '.format(speaker_text)
             topic = m.group(1).strip(), m.group(2).strip()
             converted_text += make_topic(topic, txt_format)
             description = ''
-            FIRSTLINE = True
             DESCRIPTION = True
         else:
             m = re.match(personmatch, line)
             if not m and DESCRIPTION:
                 description += '{0} '.format(line)
-            elif m and FIRSTLINE:
+            elif m:
+                if not FIRSTLINE:
+                    converted_text += '{0} '.format(speaker_text)
+                # match on the name + line
+                FIRSTLINE = True
+                SPEAKER = True
+                speaker_text = ''
+                speaker_name = ''
+                # We add the text description for the topic
                 if DESCRIPTION and (description.strip() != ''):
                     converted_text += make_description(description, txt_format)
                     DESCRIPTION = False
                 else:
                     DESCRIPTION = False
-                speaker_text = ''
-                speaker_name = ''
                 speaker_name, speaker_text = m.group(1), m.group(2)
                 converted_text += make_firstline(speaker_name, txt_format)
+                # We are out of the first line into the lines of SPEAKERS
+                FIRSTLINE = False
             elif not m and not DESCRIPTION:
-                if FIRSTLINE:
+                if SPEAKER:
                     converted_text += '{0} '.format(speaker_text)
-                    FIRSTLINE = False
-                elif not FIRSTLINE:
-                    converted_text += '{0} '.format(line)
-                FIRSTLINE = True
+                    speaker_text = ''
+                    SPEAKER = False
+                converted_text += '{0} '.format(line)
+    # We need to add the trailing speaker text before returning.
+    converted_text += '{0} '.format(speaker_text)
     return converted_text
 
 
