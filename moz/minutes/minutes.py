@@ -122,8 +122,10 @@ def parse_minutes(raw_minutes, txt_format):
             if not m and DESCRIPTION:
                 description += '{0} '.format(line)
             elif m and FIRSTLINE:
-                if DESCRIPTION and (description != ''):
+                if DESCRIPTION and (description.strip() != ''):
                     converted_text += make_description(description, txt_format)
+                    DESCRIPTION = False
+                else:
                     DESCRIPTION = False
                 speaker_text = ''
                 firstline = m.group(1), m.group(2)
