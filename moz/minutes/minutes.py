@@ -181,7 +181,6 @@ def main():
     # raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(TESTFILE)
-    print md_content
     foo = parse_minutes(md_content['text'], 'mw')
     print foo
 
