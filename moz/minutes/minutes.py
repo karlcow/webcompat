@@ -128,12 +128,15 @@ def parse_minutes(raw_minutes, txt_format):
                 else:
                     DESCRIPTION = False
                 speaker_text = ''
-                firstline = m.group(1), m.group(2)
-                converted_text += make_firstline(firstline, txt_format)
-                FIRSTLINE = False
-            else:
-                speaker_text += line
-                print '... %s' % (line)
+                speaker_name = ''
+                speaker_name, speaker_text = m.group(1), m.group(2)
+                converted_text += make_firstline(speaker_name, txt_format)
+            elif not m and not DESCRIPTION:
+                if FIRSTLINE:
+                    converted_text += '{0} '.format(speaker_text)
+                    FIRSTLINE = False
+                elif not FIRSTLINE:
+                    converted_text += '{0} '.format(line)
                 FIRSTLINE = True
     return converted_text
 
@@ -159,17 +162,16 @@ def make_description(description, txt_format='mw'):
     return formatted_description
 
 
-def make_firstline(firstline, txt_format='mw'):
+def make_firstline(speaker_name, txt_format='mw'):
     '''Convert the firstline with the text format of choice.'''
     if txt_format == 'mw':
-        formatted_firstline = "\n* '''{0}''': {1}".format(firstline[0],
-                                                          firstline[1])
+        formatted_firstline = "\n* '''{0}''': ".format(speaker_name)
     elif txt_format == 'html':
         formatted_firstline = '''
 <p class="speaker">
-    <span class="speaker_name>{0}<span>:
-    <span class="speaker_text">{1} '''.format(firstline[0],
-                                              firstline[1])
+    <span class="speaker_name>{0}<span>:'''.format(speaker_name)
+    # <span class="speaker_text">{1} '''.format(firstline[0],
+    #                                           firstline[1])
     return formatted_firstline
 
 
