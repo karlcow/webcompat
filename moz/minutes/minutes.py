@@ -40,6 +40,7 @@ arthur: fish is not fresh.
 What about whales?
 Do We need more?
 chloe: catch more fish not whales.
+arthur: but that could be an issue.
 
 ## Holiday (あきら)
 
