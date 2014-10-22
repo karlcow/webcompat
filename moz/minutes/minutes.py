@@ -156,7 +156,7 @@ def parse_minutes(raw_minutes, txt_format):
 def make_topic(topic, txt_format='mw'):
     '''Convert the topic with the text format of choice.'''
     if txt_format == 'mw':
-        formatted_topic = '\n\n== {0} ({1}) =='.format(topic[0], topic[1])
+        formatted_topic = '\n\n=== {0} ({1}) ==='.format(topic[0], topic[1])
     elif txt_format == 'html':
         formatted_topic = '''
 <h2>{0} (<span class="owner">{1}</span>)</h2>'''.format(topic[0],
@@ -196,9 +196,9 @@ def close_speaker(speaker_text, txt_format='mw'):
 def main():
     '''core program'''
     # Fetch the content online
-    # raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
+    raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
     # Extract the Multimarkdon part of the body
-    md_content = extract_minutes(TESTFILE)
+    md_content = extract_minutes(raw_content)
     foo = parse_minutes(md_content['text'], 'mw')
     print foo
 
