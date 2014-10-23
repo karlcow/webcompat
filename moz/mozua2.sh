@@ -6,10 +6,12 @@ LOCAL_USER_JS=/tmp/user.js
 LOCAL_ORIG_USER_JS=/tmp/orig-user.js
 PROFILE_DIR=/system/b2g/defaults/pref
 REMOTE_USER_JS=${PROFILE_DIR}/user.js
+SERVER_UA_LIST='https://hg.mozilla.org/mozilla-central/raw-file/tip/b2g/app/ua-update.json.in'
+LOCAL_UA_LIST=/tmp/server_ua.txt
 
 function preparing {
     # remove any previous files
-    rm -f ${LOCAL_USER_JS} ${LOCAL_USER_JS}.tmp ${LOCAL_ORIG_USER_JS}    
+    rm -f ${LOCAL_USER_JS} ${LOCAL_USER_JS}.tmp ${LOCAL_ORIG_USER_JS}
     # pull from the device to a local tmp directory
     adb pull ${REMOTE_USER_JS} ${LOCAL_USER_JS}
 }
@@ -45,6 +47,12 @@ function override {
     else
         error
     fi
+}
+
+function list {
+    local DOMAIN=${1}
+    echo "UA override for" ${DOMAIN}
+    grep -i ${DOMAIN} ${LOCAL_UA_LIST}
 }
 
 function error {
@@ -94,7 +102,7 @@ echo "========================================="
 echo "UA override management on Firefox OS 1.2+"
 echo "========================================="
 
-# Main 
+# Main
 if [[ $# != 2 ]]; then
     helpmsg
     exit 1
@@ -106,7 +114,8 @@ preparing
 if   [[ ${1} == "override" ]]; then
     override ${2}
 elif [[ ${1} == "list" ]]; then
-    echo "TODO list UA override for " ${2}
+    curl -s ${SERVER_UA_LIST} -o ${LOCAL_UA_LIST}
+    list ${2}
 elif [[ ${1} == "add" ]]; then
     echo "TODO add UA override for " ${2}
 elif [[ ${1} == "remove" ]]; then
