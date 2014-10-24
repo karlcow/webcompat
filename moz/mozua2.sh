@@ -19,8 +19,7 @@ function preparing {
 function helpmsg {
     # Print the list of arguments
     cat << EOF
-The List of UA overrides on Firefox OS 1.2+ is controlled by
-a remote file located at:
+The List of UA overrides is controlled by a remote file located at:
 https://hg.mozilla.org/mozilla-central/raw-file/tip/b2g/app/ua-update.json.in
 
 In addition you still have the ability to add UA override
