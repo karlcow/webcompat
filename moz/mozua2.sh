@@ -84,6 +84,12 @@ function add {
     local DOMAIN=${1}
     local UA=${2}
     echo "Adding UA override for" ${DOMAIN} "with User-Agent" ${UA}
+    echo "@TODO: Download the user.js prefs locally in /tmp"
+    echo "@TODO: Need to check if override is already here local or remote. Use list?"
+    echo "@TODO: If yes display the current UA override"
+    echo "@TODO: If no  add the UA override to the prefs file in /tmp"
+    echo "@TODO: push to device"
+    echo "@TODO: reboot the device"
     }
 
 
