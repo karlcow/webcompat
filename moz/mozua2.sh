@@ -18,7 +18,33 @@ function preparing {
 
 function helpmsg {
     # Print the list of arguments
-    echo "TODO Manual to create"
+    cat << EOF
+The List of UA overrides on Firefox OS 1.2+ is controlled by
+a remote file located at:
+https://hg.mozilla.org/mozilla-central/raw-file/tip/b2g/app/ua-update.json.in
+
+In addition you still have the ability to add UA override
+locally for testing.
+
+Usage: mozua2.sh <options>
+
+List of options:
+
+on/off:
+    Enable or disable the remote UA override list.
+
+list <string>:
+    Give a list of all domain names matchin the string
+    having a UA override.
+
+add <domain_name> <ua_string>:
+    Add the domain_name to the local list of UA overrides
+    using a specific User Agent string.
+
+remove <domain_name>:
+    Remove the domain_name from the local list of UA overrides.
+
+EOF
 }
 
 function overridestatus {
