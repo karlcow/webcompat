@@ -86,9 +86,19 @@ function list {
 function add {
     local DOMAIN=${1}
     local UA=${2}
-    echo "Adding UA override for" ${DOMAIN} "with User-Agent" ${UA}
-    echo "@TODO: Download the user.js prefs locally in /tmp"
-    echo "@TODO: Need to check if override is already here local or remote. Use list?"
+    remote_list=`grep -i ${DOMAIN} ${LOCAL_UA_LIST} | sed -e 's/^ *//' -e 's/ *$//'`
+    user_list=`grep -i general.useragent.override.${DOMAIN} ${LOCAL_USER_JS}`
+    if [[ -z "$remote_list" ]]; then
+        if [[ -z "$user_list" ]]; then
+            echo "@TODO: Adding UA override for" ${DOMAIN} "with User-Agent" ${UA}
+        else
+            echo "There is already a local UA override for this domain."
+            echo "local:<$user_list>"
+        fi
+    else
+        echo "There is already a remote UA override for this domain."
+        echo "local:<$remote_list>"
+    fi
     echo "@TODO: If yes display the current UA override"
     echo "@TODO: If no  add the UA override to the prefs file in /tmp"
     echo "@TODO: push to device"
