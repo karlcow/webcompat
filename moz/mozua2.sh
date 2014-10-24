@@ -80,6 +80,7 @@ function list {
     local DOMAIN=${1}
     echo "UA override for" ${DOMAIN}
     grep -i ${DOMAIN} ${LOCAL_UA_LIST} ${LOCAL_USER_JS}
+    echo "TODO: better presentation and matching for search"
 }
 
 function add {
