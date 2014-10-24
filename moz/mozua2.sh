@@ -11,9 +11,11 @@ LOCAL_UA_LIST=/tmp/server_ua.txt
 
 function preparing {
     # remove any previous files
-    rm -f ${LOCAL_USER_JS} ${LOCAL_USER_JS}.tmp ${LOCAL_ORIG_USER_JS}
+    rm -f ${LOCAL_USER_JS} ${LOCAL_USER_JS}.tmp ${LOCAL_ORIG_USER_JS} ${LOCAL_UA_LIST}
     # pull from the device to a local tmp directory
     adb pull ${REMOTE_USER_JS} ${LOCAL_USER_JS}
+    # downloading the remote list of UA override
+    curl -s ${SERVER_UA_LIST} -o ${LOCAL_UA_LIST}
 }
 
 function helpmsg {
@@ -152,7 +154,6 @@ preparing
 if   [[ ${1} == "override" ]]; then
     override ${2}
 elif [[ ${1} == "list" ]]; then
-    curl -s ${SERVER_UA_LIST} -o ${LOCAL_UA_LIST}
     list ${2}
 elif [[ ${1} == "add" ]]; then
     add ${2} ${3}
