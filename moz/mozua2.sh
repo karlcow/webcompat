@@ -80,6 +80,13 @@ function list {
     grep -i ${DOMAIN} ${LOCAL_UA_LIST}
 }
 
+function add {
+    local DOMAIN=${1}
+    local UA=${2}
+    echo "Adding UA override for" ${DOMAIN} "with User-Agent" ${UA}
+    }
+
+
 function error {
     # error message
     echo "This is not a valid feature"
@@ -128,7 +135,7 @@ echo "UA override management on Firefox OS 1.2+"
 echo "========================================="
 
 # Main
-if [[ $# != 2 ]]; then
+if [[ $# < 2 || $# > 3 ]]; then
     helpmsg
     exit 1
 fi
@@ -142,7 +149,7 @@ elif [[ ${1} == "list" ]]; then
     curl -s ${SERVER_UA_LIST} -o ${LOCAL_UA_LIST}
     list ${2}
 elif [[ ${1} == "add" ]]; then
-    echo "TODO add UA override for " ${2}
+    add ${2} ${3}
 elif [[ ${1} == "remove" ]]; then
     echo "TODO remove UA override for " ${2}
 else
