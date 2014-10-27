@@ -4,6 +4,9 @@
 
 LOCAL_USER_JS=/tmp/user.js
 LOCAL_ORIG_USER_JS=/tmp/orig-user.js
+# TODO: Change this for /data/b2g/mozilla/*.default/
+# The user profile is
+# /data/b2g/mozilla/something.default/prefs.js
 PROFILE_DIR=/system/b2g/defaults/pref
 REMOTE_USER_JS=${PROFILE_DIR}/user.js
 SERVER_UA_LIST='https://hg.mozilla.org/mozilla-central/raw-file/tip/b2g/app/ua-update.json.in'
