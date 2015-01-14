@@ -33,7 +33,7 @@ def broken_voices():
             title = title.replace('[', '(')
             title = title.replace(']', ')')
             voice_markup += "* %s - [%s %s]\n" % (shortdate, postlink, title)
-    return voice_markup
+    return voice_markup.encode('utf-8')
 
 
 def main():
