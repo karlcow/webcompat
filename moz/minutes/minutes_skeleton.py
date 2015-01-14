@@ -14,6 +14,7 @@ import sys
 from datetime import date, timedelta
 import bugsweeksummary
 import extractfeedtitle
+import minutes
 
 MINUTES_TEMPLATE = '''
 * [[Compatibility/Mobile|Mobile Web Compatibility]] Meeting - {meeting_date}
@@ -44,8 +45,8 @@ def previous_meeting(mtoday):
 
 def meeting_minutes():
     '''Create the meeting minutes'''
-    minutes = None
-    return minutes
+    minutes_txt = minutes.main()
+    return minutes_txt
 
 
 def wiki_markup():
