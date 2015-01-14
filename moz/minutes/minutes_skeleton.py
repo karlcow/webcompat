@@ -52,13 +52,18 @@ def wiki_markup():
     '''return the final wiki markup'''
     mtoday = meeting_date()
     today_iso = mtoday.isoformat()
-
+    print('Preparing Meeting Minutes')
+    meet_minutes = meeting_minutes()
+    print('Preparing blogs summary')
+    blogs = extractfeedtitle.broken_voices()
+    print('Preparing bugs summary')
+    bugs = bugsweeksummary.summary()
     return MINUTES_TEMPLATE.format(
         meeting_date=today_iso,
         previous_week=previous_meeting(mtoday),
-        minutes=meeting_minutes(),
-        broken_voices=extractfeedtitle.broken_voices(),
-        bugs_summary=bugsweeksummary.summary()
+        minutes=meet_minutes,
+        broken_voices=blogs,
+        bugs_summary=bugs
         )
 
 
