@@ -199,8 +199,8 @@ def main():
     raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(raw_content)
-    foo = parse_minutes(md_content['text'], 'mw')
-    print foo
+    final_text = parse_minutes(md_content['text'], 'mw')
+    return final_text.encode('utf-8')
 
 if __name__ == "__main__":
     sys.exit(main())
