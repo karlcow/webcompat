@@ -114,6 +114,7 @@ def parse_minutes(raw_minutes, txt_format):
     for line in raw_minutes.split('\n'):
         m = re.match(topicmatch, line)
         if m:
+            print "match topic 1"
             if not SPEAKER:
                 converted_text += close_speaker(speaker_text, txt_format)
             topic = m.group(1).strip(), m.group(2).strip()
@@ -121,10 +122,13 @@ def parse_minutes(raw_minutes, txt_format):
             description = ''
             DESCRIPTION = True
         else:
+            print "DO NOT match topic 2"
             m = re.match(personmatch, line)
             if not m and DESCRIPTION:
                 description += '{0} '.format(line)
+                print description
             elif m:
+                print "match topic 3"
                 if not FIRSTLINE:
                     converted_text += close_speaker(speaker_text, txt_format)
                 # match on the name + line
@@ -143,6 +147,7 @@ def parse_minutes(raw_minutes, txt_format):
                 # We are out of the first line into the lines of SPEAKERS
                 FIRSTLINE = False
             elif not m and not DESCRIPTION:
+                print "DO NOT match topic 4"
                 if SPEAKER:
                     converted_text += '{0} '.format(speaker_text)
                     speaker_text = ''
@@ -161,6 +166,8 @@ def make_topic(topic, txt_format='mw'):
         formatted_topic = '''
 <h2>{0} (<span class="owner">{1}</span>)</h2>'''.format(topic[0],
                                                         topic[1])
+    elif txt_format == 'email':
+        formatted_topic = '### {0} ({1})\n'.format(topic[0], topic[1])
     return formatted_topic
 
 
@@ -171,6 +178,8 @@ def make_description(description, txt_format='mw'):
     elif txt_format == 'html':
         formatted_description = '''
 <p class="description">{0}</p>'''.format(description)
+    elif txt_format == 'email':
+        formatted_description = '{0}\n'.format(description)
     return formatted_description
 
 
@@ -182,6 +191,8 @@ def make_firstline(speaker_name, txt_format='mw'):
         formatted_firstline = '''
 <p class="speaker">
     <span class="speaker_name>{0}<span>:'''.format(speaker_name)
+    elif txt_format == 'email':
+        formatted_firstline = ''
     return formatted_firstline
 
 
@@ -191,16 +202,20 @@ def close_speaker(speaker_text, txt_format='mw'):
         return speaker_text
     elif txt_format == 'html':
         return " {0}</p>".format(speaker_text)
+    elif txt_format == 'email':
+        return ''
 
 
 def main():
     '''core program'''
     # Fetch the content online
-    raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
+    # raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
+    raw_content = TESTFILE
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(raw_content)
-    final_text = parse_minutes(md_content['text'], 'mw')
-    return final_text.encode('utf-8')
+    final_text = parse_minutes(md_content['text'], 'email')
+    # return final_text.encode('utf-8')
+    return final_text
 
 if __name__ == "__main__":
     sys.exit(main())
