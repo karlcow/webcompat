@@ -43,10 +43,16 @@ chloe: catch more fish not whales.
 arthur: but that could be an issue.
 
 ## Holiday (あきら)
+another description useless
 
 amir: life is too short.
 But we never know. We might learn something.
 akira: Let's make it big.
+
+## Finally topic without description (George)
+
+louis: People are loud
+akira: Really?
 
 ===========AGENDA ITEMS ABOVE THIS LINE===========
 
@@ -101,10 +107,11 @@ def parse_minutes(raw_minutes, txt_format):
     It will return a structured format ready to be converted.
     '''
     # Initializing
-    FIRSTLINE = False
+    SPEAKER_CONTINUE = False
+    TOPIC = False
     DESCRIPTION = False
-    SPEAKER = False
     converted_text = ''
+    description = ''
     speaker_text = ''
     topicmatch = re.compile(ur'^##\s*(.*)\s*\((.*)\)\s*')
     personmatch = re.compile(ur'^([^: .]+):\s(.*)')
@@ -112,47 +119,41 @@ def parse_minutes(raw_minutes, txt_format):
     raw_minutes = raw_minutes.strip()
     # going through the text
     for line in raw_minutes.split('\n'):
-        m = re.match(topicmatch, line)
-        if m:
-            print "match topic 1"
-            if not SPEAKER:
+        p = re.match(personmatch, line)
+        # More chances to match a line than a topic
+        if p:
+            # Maybe just after a topic, so a description
+            if DESCRIPTION:
+                converted_text += make_description(description, txt_format)
+                DESCRIPTION = False
+            else:
                 converted_text += close_speaker(speaker_text, txt_format)
-            topic = m.group(1).strip(), m.group(2).strip()
-            converted_text += make_topic(topic, txt_format)
-            description = ''
-            DESCRIPTION = True
+            # First speaker line
+            speaker_name, speaker_text = p.group(1), p.group(2)
+            converted_text += make_firstline(speaker_name, txt_format)
+            SPEAKER_CONTINUE = True
+            TOPIC = False
         else:
-            print "DO NOT match topic 2"
-            m = re.match(personmatch, line)
-            if not m and DESCRIPTION:
-                description += '{0} '.format(line)
-                print description
-            elif m:
-                print "match topic 3"
-                if not FIRSTLINE:
+            m = re.match(topicmatch, line)
+            if m:
+                if not DESCRIPTION:
                     converted_text += close_speaker(speaker_text, txt_format)
-                # match on the name + line
-                FIRSTLINE = True
-                SPEAKER = True
-                speaker_text = ''
-                speaker_name = ''
-                # We add the text description for the topic
-                if DESCRIPTION and (description.strip() != ''):
-                    converted_text += make_description(description, txt_format)
-                    DESCRIPTION = False
+                # we are in Topic
+                TOPIC = True
+                DESCRIPTION = True
+                # no description yet
+                description = ''
+                # extract the topic
+                topic = m.group(1).strip(), m.group(2).strip()
+                converted_text += make_topic(topic, txt_format)
+            else:
+                if line.strip() == '':
+                    pass
+                elif SPEAKER_CONTINUE and not TOPIC:
+                    speaker_text += ' {0}'.format(line)
                 else:
-                    DESCRIPTION = False
-                speaker_name, speaker_text = m.group(1), m.group(2)
-                converted_text += make_firstline(speaker_name, txt_format)
-                # We are out of the first line into the lines of SPEAKERS
-                FIRSTLINE = False
-            elif not m and not DESCRIPTION:
-                print "DO NOT match topic 4"
-                if SPEAKER:
-                    converted_text += '{0} '.format(speaker_text)
-                    speaker_text = ''
-                    SPEAKER = False
-                converted_text += '{0} '.format(line)
+                    # We are dealing with a description
+                    description += '{0} '.format(line)
     # We need to add the trailing speaker text before returning.
     converted_text += close_speaker(speaker_text, txt_format)
     return converted_text
@@ -209,13 +210,13 @@ def close_speaker(speaker_text, txt_format='mw'):
 def main():
     '''core program'''
     # Fetch the content online
-    # raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
-    raw_content = TESTFILE
+    raw_content, encoding = etherpad_content(SERVER_URL, 'webcompat', 'txt')
+    # raw_content = TESTFILE
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(raw_content)
-    final_text = parse_minutes(md_content['text'], 'email')
-    # return final_text.encode('utf-8')
-    return final_text
+    final_text = parse_minutes(md_content['text'], 'mw')
+    return final_text.encode('utf-8')
+    # return final_text
 
 if __name__ == "__main__":
     sys.exit(main())
