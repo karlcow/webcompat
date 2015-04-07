@@ -17,14 +17,19 @@ from datetime import date, timedelta
 import minutes
 
 MAIL_TEMPLATE = '''
+--MAIL SUBJECT-------------------------------------------------
+[Agenda] {human_date} Web Compatibility Meeting
+--MAIL BODY----------------------------------------------------
 # Web Compatibility Meeting on {meeting_date} at 13:00 UTC
 ## Agenda (preliminary)
+
 {minutes}
 
 More items: https://etherpad.mozilla.org/webcompat
 Last Week:  https://wiki.mozilla.org/Compatibility/Mobile/{previous_week}
-Schedule:   http://timesched.pocoo.org/?date={meeting_date}&tz=us:san-francisco:ca,us:austin:tx,ca:toronto,utc!,fr:paris,tw:taipei,jp:tokyo,nz:auckland&range=780,840
+Schedule:   <http://timesched.pocoo.org/?date={meeting_date}&tz=us:san-francisco:ca,us:austin:tx,ca:toronto,utc!,fr:paris,tw:taipei,jp:tokyo,nz:auckland&range=780,840>
 
+---------------------------------------------------------------
 '''
 
 
@@ -53,11 +58,16 @@ def meeting_minutes():
 def email_markup():
     '''return the final wiki markup'''
     mtoday = meeting_date()
+    dformat = "%d %B %Y"
+    human_date = date.today().strftime(dformat)
+    if human_date.startswith('0'):
+        human_date = human_date[1:]
     today_iso = mtoday.isoformat()
     print('Preparing Meeting Minutes')
     meet_minutes = meeting_minutes()
     print('Preparing email')
     return MAIL_TEMPLATE.format(
+        human_date=human_date,
         meeting_date=today_iso,
         previous_week=previous_meeting(mtoday),
         minutes=meet_minutes
@@ -66,7 +76,7 @@ def email_markup():
 
 def main():
     '''core program'''
-    print email_markup()
+    print(email_markup())
 
 
 if __name__ == "__main__":
