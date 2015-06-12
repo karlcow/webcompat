@@ -53,7 +53,7 @@ EOF
 
 overridestatus() {
     # Check the status of override
-    PREFOVERRIDE=`grep useragent.updates.enabled ${LOCAL_USER_JS}`
+    PREFOVERRIDE=$(grep useragent.updates.enabled ${LOCAL_USER_JS})
     if [[ "$PREFOVERRIDE" =~ "false" ]]; then
         echo False
     else
@@ -89,8 +89,8 @@ list() {
 add() {
     local DOMAIN=${1}
     local UA=${2}
-    remote_list=`grep -i ${DOMAIN} ${LOCAL_UA_LIST} | sed -e 's/^ *//' -e 's/ *$//'`
-    user_list=`grep -i general.useragent.override.${DOMAIN} ${LOCAL_USER_JS}`
+    remote_list=$(grep -i ${DOMAIN} ${LOCAL_UA_LIST} | sed -e 's/^ *//' -e 's/ *$//')
+    user_list=$(grep -i general.useragent.override.${DOMAIN} ${LOCAL_USER_JS})
     if [[ -z "$remote_list" ]]; then
         if [[ -z "$user_list" ]]; then
             echo "@TODO: Adding UA override for" ${DOMAIN} "with User-Agent" ${UA}
