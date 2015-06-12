@@ -12,7 +12,7 @@ REMOTE_USER_JS=${PROFILE_DIR}/user.js
 SERVER_UA_LIST='https://hg.mozilla.org/mozilla-central/raw-file/tip/b2g/app/ua-update.json.in'
 LOCAL_UA_LIST=/tmp/server_ua.txt
 
-function preparing {
+preparing() {
     # remove any previous files
     rm -f ${LOCAL_USER_JS} ${LOCAL_USER_JS}.tmp ${LOCAL_ORIG_USER_JS} ${LOCAL_UA_LIST}
     # pull from the device to a local tmp directory
@@ -21,7 +21,7 @@ function preparing {
     curl -s ${SERVER_UA_LIST} -o ${LOCAL_UA_LIST}
 }
 
-function helpmsg {
+helpmsg() {
     # Print the list of arguments
     cat << EOF
 The List of UA overrides is controlled by a remote file located at:
@@ -51,7 +51,7 @@ remove <domain_name>:
 EOF
 }
 
-function overridestatus {
+overridestatus() {
     # Check the status of override
     PREFOVERRIDE=`grep useragent.updates.enabled ${LOCAL_USER_JS}`
     if [[ "$PREFOVERRIDE" =~ "false" ]]; then
@@ -61,7 +61,7 @@ function overridestatus {
     fi
 }
 
-function override {
+override() {
     if   [[ $1 == "on" ]]; then
         if [[ overridestatus == True ]]; then
             echo "UA override is already on!"
@@ -79,14 +79,14 @@ function override {
     fi
 }
 
-function list {
+list() {
     local DOMAIN=${1}
     echo "UA override for" ${DOMAIN}
     grep -i ${DOMAIN} ${LOCAL_UA_LIST} ${LOCAL_USER_JS}
     echo "TODO: better presentation and matching for search"
 }
 
-function add {
+add() {
     local DOMAIN=${1}
     local UA=${2}
     remote_list=`grep -i ${DOMAIN} ${LOCAL_UA_LIST} | sed -e 's/^ *//' -e 's/ *$//'`
@@ -109,12 +109,12 @@ function add {
     }
 
 
-function error {
+error() {
     # error message
     echo "This is not a valid feature"
 }
 
-function activate {
+activate() {
     # Activate UA override
     echo "Activate UA override"
     grep -v "useragent.updates.enabled" ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
@@ -122,7 +122,7 @@ function activate {
     pushtodevice
 }
 
-function stop {
+stop() {
     # Stop UA Override
     echo "Stop UA override"
     grep -v "useragent.updates.enabled" ${LOCAL_USER_JS} > ${LOCAL_USER_JS}.tmp
@@ -130,7 +130,7 @@ function stop {
     pushtodevice
 }
 
-function pushtodevice {
+pushtodevice() {
     # Upload the new prefs
     echo "Pushing to device"
     set -x
@@ -140,13 +140,13 @@ function pushtodevice {
     restart
 }
 
-function restart {
+restart() {
     # Create a soft reboot
     echo "Restart the device (software)"
     adb shell stop b2g && adb shell start b2g
 }
 
-function reboot {
+reboot() {
     # Create a hard reboot
     echo "Restart the device (hardware)"
     adb reboot
