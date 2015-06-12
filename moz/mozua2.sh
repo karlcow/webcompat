@@ -62,14 +62,15 @@ overridestatus() {
 }
 
 override() {
+    OVERRIDEFLAG=overridestatus
     if   [[ $1 == "on" ]]; then
-        if [[ $overridestatus == True ]]; then
+        if [[ $OVERRIDEFLAG ]]; then
             echo "UA override is already on!"
             exit 1
         fi
         activate
     elif [[ $1 = "off" ]]; then
-        if [[ $overridestatus == False ]]; then
+        if [[ $OVERRIDEFLAG ]]; then
             echo "UA override is already off!"
             exit 1
         fi
