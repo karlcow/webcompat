@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Script to add manage UA override to B2G 1.2+
 # Karl Dubost - 2013 © - MIT Licence
 
@@ -81,19 +81,19 @@ override() {
 
 list() {
     local DOMAIN=${1}
-    echo "UA override for" ${DOMAIN}
-    grep -i ${DOMAIN} ${LOCAL_UA_LIST} ${LOCAL_USER_JS}
+    echo "UA override for ${DOMAIN}"
+    grep -i "${DOMAIN} ${LOCAL_UA_LIST} ${LOCAL_USER_JS}"
     echo "TODO: better presentation and matching for search"
 }
 
 add() {
     local DOMAIN=${1}
     local UA=${2}
-    remote_list=$(grep -i ${DOMAIN} ${LOCAL_UA_LIST} | sed -e 's/^ *//' -e 's/ *$//')
-    user_list=$(grep -i general.useragent.override.${DOMAIN} ${LOCAL_USER_JS})
+    remote_list=$(grep -i "${DOMAIN} ${LOCAL_UA_LIST}" | sed -e 's/^ *//' -e 's/ *$//')
+    user_list=$(grep -i general.useragent.override."${DOMAIN} ${LOCAL_USER_JS}")
     if [[ -z "$remote_list" ]]; then
         if [[ -z "$user_list" ]]; then
-            echo "@TODO: Adding UA override for" ${DOMAIN} "with User-Agent" ${UA}
+            echo "@TODO: Adding UA override for ${DOMAIN} with User-Agent ${UA}"
         else
             echo "There is already a local UA override for this domain."
             echo "local:<$user_list>"
@@ -166,13 +166,13 @@ fi
 preparing
 # Going through the options
 if   [[ ${1} == "override" ]]; then
-    override ${2}
+    override "${2}"
 elif [[ ${1} == "list" ]]; then
-    list ${2}
+    list "${2}"
 elif [[ ${1} == "add" ]]; then
-    add ${2} ${3}
+    add "${2} ${3}"
 elif [[ ${1} == "remove" ]]; then
-    echo "TODO remove UA override for " ${2}
+    echo "TODO remove UA override for ${2}"
 else
     error
     helpmsg
