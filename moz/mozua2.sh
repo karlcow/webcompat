@@ -157,7 +157,7 @@ echo "UA override management on Firefox OS 1.2+"
 echo "========================================="
 
 # Main
-if [[ $# < 2 || $# > 3 ]]; then
+if [[ $# -lt 2 || $# -gt 3 ]]; then
     helpmsg
     exit 1
 fi
