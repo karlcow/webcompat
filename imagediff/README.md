@@ -1,4 +1,4 @@
-Image Diff for Screenshots
+# Image Diff for Screenshots
 
 1. Given a directory of images: `dir_path`
 2. Images have the name `somename-AFTER.png` `somename-BEFORE.png`
