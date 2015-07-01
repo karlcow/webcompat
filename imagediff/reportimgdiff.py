@@ -37,6 +37,14 @@ def diff_ratio(s1, s2):
     return s.quick_ratio()
 
 
+def image_tuple(prefix, dir_path):
+    """Create a tuple of full path for images."""
+
+    path_before = os.path.join(dir_path, prefix + '-BEFORE.png')
+    path_after = os.path.join(dir_path, prefix + '-AFTER.png')
+    return path_before, path_after
+
+
 def main():
     """Main."""
     # Let's parse the command line
