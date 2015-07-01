@@ -19,12 +19,23 @@ def cli():
     return args
 
 
+def images_list(dir_path):
+    """Create an image list of the directory content.
+
+    The list will collect only the filename prefix.
+    """
+    prefix_list = [filename[:-11] for filename in os.listdir(dir_path)
+                   if filename.endswith('-BEFORE.png')]
+    return prefix_list
+
+
 def main():
     """Main."""
     # Let's parse the command line
     args = cli()
     # we get the directory
     dir_path = args.dir_path
+    prefix_list = images_list(dir_path)
 
 
 if __name__ == "__main__":
