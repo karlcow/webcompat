@@ -8,6 +8,7 @@ and compute the difference according to a ratio.
 """
 
 import argparse
+import difflib
 import os
 
 
@@ -28,6 +29,12 @@ def images_list(dir_path):
     prefix_list = [filename[:-11] for filename in os.listdir(dir_path)
                    if filename.endswith('-BEFORE.png')]
     return prefix_list
+
+
+def diff_ratio(s1, s2):
+    """Compute the diff ratio in between two images."""
+    s = difflib.SequenceMatcher(None, s1, s2)
+    return s.quick_ratio()
 
 
 def main():
