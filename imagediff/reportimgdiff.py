@@ -8,6 +8,7 @@ and compute the difference according to a ratio.
 """
 
 import argparse
+import os
 
 
 def cli():
