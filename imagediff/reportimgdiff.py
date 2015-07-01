@@ -52,6 +52,17 @@ def main():
     # we get the directory
     dir_path = args.dir_path
     prefix_list = images_list(dir_path)
+    for prefix in prefix_list:
+        path_before, path_after = image_tuple(prefix, dir_path)
+        with open(path_before, 'r') as image_before:
+            try:
+                with open(path_after, 'r') as image_after:
+                    s1 = image_before.read()
+                    s2 = image_after.read()
+                    image_diff = diff_ratio(s1, s2)
+                    print('{:5.4f} - {}'.format(image_diff, prefix))
+            except IOError:
+                print('AFTER file is missing for %s ' % path_after)
 
 
 if __name__ == "__main__":
