@@ -10,7 +10,7 @@ MIT License
 We want:
 
 1. Import
-https://etherpad.mozilla.org/ep/pad/export/webcompat/latest?format=txt
+https://public.etherpad-mozilla.org/p/webcompat/export/txt
 2. Extract the effective minutes from the text
 3. Extract the date
 4. Convert the text to the appropriate format
@@ -22,8 +22,8 @@ import sys
 import requests
 
 WIKI_TEMPLATE = '''== Minutes =='''
-URL = 'https://etherpad.mozilla.org/ep/pad/export/webcompat/latest?format=txt'
-SERVER_URL = 'https://etherpad.mozilla.org'
+URL = 'https://public.etherpad-mozilla.org/p/webcompat/export/txt'
+SERVER_URL = 'https://public.etherpad-mozilla.org'
 STOPLINE = '===========AGENDA ITEMS ABOVE THIS LINE==========='
 TESTFILE = '''
 
@@ -63,9 +63,7 @@ we do not want that.
 
 def etherpad_content(server_uri, pad_name, pad_format='txt'):
     '''Fetch the text version of the etherpad.'''
-    url = '{0}/ep/pad/export/{1}/latest?format={2}'.format(server_uri,
-                                                           pad_name,
-                                                           pad_format)
+    url = '{0}/p/{1}/export/{2}'.format(server_uri, pad_name, pad_format)
     content = requests.get(url)
     return content.text, content.encoding
 
