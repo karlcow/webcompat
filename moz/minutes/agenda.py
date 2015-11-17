@@ -47,7 +47,7 @@ def previous_meeting(mtoday):
 def meeting_minutes():
     '''Create the meeting minutes'''
     # Fetch the content online
-    SERVER_URL = 'https://etherpad.mozilla.org'
+    SERVER_URL = 'https://public.etherpad-mozilla.org'
     raw_content, encoding = minutes.etherpad_content(SERVER_URL, 'webcompat', 'txt')
     # Extract the Multimarkdon part of the body
     md_content = minutes.extract_minutes(raw_content)
