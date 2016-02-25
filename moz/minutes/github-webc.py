@@ -11,7 +11,6 @@ MIT License
 """
 
 from datetime import datetime
-from datetime import time
 import sys
 
 from lxml.cssselect import CSSSelector
@@ -51,9 +50,9 @@ def extract_labels_count(github_html, LABELS_LIST):
     labels_name = [name.text for name in sel_name(github_html)]
     # The two lists have the same length, we zip them.
     # And we select only the ones from the LABELS_LIST
-    labels = [label for label in zip(labels_count, labels_name)
-              if label[1] in LABELS_LIST]
-    return labels
+    labels = [label for label in zip(labels_name, labels_count)
+              if label[0] in LABELS_LIST]
+    return dict(labels)
 
 
 def format_data(issues_count, labels, TEMPLATE):
@@ -62,11 +61,11 @@ def format_data(issues_count, labels, TEMPLATE):
     iso = today.isoformat()
     print TEMPLATE.format(date=iso,
                           open=issues_count,
-                          info=labels[3][0],
-                          diag=labels[2][0],
-                          contact=labels[1][0],
-                          ready=labels[0][0],
-                          wait=labels[4][0])
+                          info=labels['status-needsinfo'],
+                          diag=labels['status-needsdiagnosis'],
+                          contact=labels['status-needscontact'],
+                          ready=labels['status-contactready'],
+                          wait=labels['status-sitewait'])
 
 
 def main():
