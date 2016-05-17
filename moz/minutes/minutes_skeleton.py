@@ -17,19 +17,16 @@ import extractfeedtitle
 import minutes
 
 MINUTES_TEMPLATE = '''
-* [[Compatibility/Mobile|Mobile Web Compatibility]] Meeting - {meeting_date}
-* [[Compatibility/Mobile#Minutes_and_Progress_Reports|Minutes]]:
-[[Compatibility/Mobile/{previous_week}|Previous {previous_week}]]
+* [[Compatibility|Web Compatibility]] Meeting - {meeting_date}
+* [[Compatibility/Meetings|Minutes]]: [[Compatibility/Mobile/{previous_week}|Previous {previous_week}]]
 
 == Minutes ==
 {minutes}
-=== Heads Up ===
-create_summary_here
 
 == Broken Voices of the Web ==
 {broken_voices}
 {bugs_summary}
-'''
+'''  # nopep8
 
 
 def meeting_date(mdate=None):
