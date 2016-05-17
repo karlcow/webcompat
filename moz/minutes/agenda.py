@@ -25,7 +25,7 @@ MAIL_TEMPLATE = '''
 
 {minutes}
 
-More items: https://etherpad.mozilla.org/webcompat
+More items: https://public.etherpad-mozilla.org/p/webcompat
 Last Week:  https://wiki.mozilla.org/Compatibility/Mobile/{previous_week}
 Schedule:   <http://timesched.pocoo.org/?date={meeting_date}&tz=us:san-francisco:ca,us:austin:tx,ca:toronto,utc!,fr:paris,tw:taipei,jp:tokyo,nz:auckland&range=780,840>
 
