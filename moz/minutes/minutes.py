@@ -205,6 +205,11 @@ def close_speaker(speaker_text, txt_format='mw'):
         return ''
 
 
+def extract_meeting_date(meta_uri):
+    '''Extracts the date from the meeting URI.'''
+    return meta_uri[-10:]
+
+
 def main():
     '''core program'''
     # Fetch the content online
@@ -212,8 +217,9 @@ def main():
     # raw_content = TESTFILE
     # Extract the Multimarkdon part of the body
     md_content = extract_minutes(raw_content)
+    meeting_date = extract_meeting_date(md_content['Minutes'])
     final_text = parse_minutes(md_content['text'], 'mw')
-    return final_text.encode('utf-8')
+    return final_text.encode('utf-8'), meeting_date
     # return final_text
 
 if __name__ == "__main__":

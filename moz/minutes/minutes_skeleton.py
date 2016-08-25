@@ -10,7 +10,6 @@ Copyright (c) 2014 La Grange. All rights reserved.
 MIT License
 """
 
-from datetime import date, timedelta
 import sys
 
 import requests
@@ -50,30 +49,22 @@ def previous_meeting(wiki_content):
     return iso_date
 
 
-def meeting_date(mdate=None):
-    '''return the meeting date if not given'''
-    if not mdate:
-        return date.today()
-
-
 def meeting_minutes():
     '''Create the meeting minutes'''
-    minutes_txt = minutes.main()
-    return minutes_txt
+    minutes_txt, meeting_date = minutes.main()
+    return minutes_txt, meeting_date
 
 
 def wiki_markup(previous_date):
     '''return the final wiki markup'''
-    mtoday = meeting_date()
-    today_iso = mtoday.isoformat()
     print('Preparing Meeting Minutes')
-    meet_minutes = meeting_minutes()
+    meet_minutes, meeting_date = meeting_minutes()
     print('Preparing blogs summary')
     blogs = extractfeedtitle.broken_voices()
     print('Preparing bugs summary')
     bugs = bugsweeksummary.summary()
     return MINUTES_TEMPLATE.format(
-        meeting_date=today_iso,
+        meeting_date=meeting_date,
         previous_week=previous_date,
         minutes=meet_minutes,
         broken_voices=blogs,
