@@ -18,7 +18,7 @@ import minutes
 
 MINUTES_TEMPLATE = '''
 * [[Compatibility|Web Compatibility]] Meeting - {meeting_date}
-* [[Compatibility/Meetings|Minutes]]: [[Compatibility/Mobile/{previous_week}|Previous {previous_week}]]
+* [[Compatibility/Meetings|Minutes]]: [[Compatibility/Meetings/{previous_week}|Previous {previous_week}]]
 
 == Minutes ==
 {minutes}
@@ -61,13 +61,12 @@ def wiki_markup():
         previous_week=previous_meeting(mtoday),
         minutes=meet_minutes,
         broken_voices=blogs,
-        bugs_summary=bugs
-        )
+        bugs_summary=bugs)
 
 
 def main():
     '''core program'''
-    print wiki_markup()
+    print(wiki_markup())
 
 
 if __name__ == "__main__":
