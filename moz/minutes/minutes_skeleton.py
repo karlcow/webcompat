@@ -10,12 +10,16 @@ Copyright (c) 2014 La Grange. All rights reserved.
 MIT License
 """
 
-import sys
 from datetime import date, timedelta
+import sys
+
+import requests
+
 import bugsweeksummary
 import extractfeedtitle
 import minutes
 
+MEETINGS_URI = 'https://wiki.mozilla.org/Compatibility/Meetings?action=raw'
 MINUTES_TEMPLATE = '''
 * [[Compatibility|Web Compatibility]] Meeting - {meeting_date}
 * [[Compatibility/Meetings|Minutes]]: [[Compatibility/Meetings/{previous_week}|Previous {previous_week}]]
@@ -29,15 +33,27 @@ MINUTES_TEMPLATE = '''
 '''  # nopep8
 
 
+def wiki_page(uri):
+    '''Fetch the raw text version of the wiki markup.'''
+    content = requests.get(uri)
+    return content.text, content.encoding
+
+
+def previous_meeting(wiki_content):
+    '''Extract the latest meeting date.'''
+    iso_date = None
+    for line in wiki_content.split('\n'):
+        if line.startswith('* Tuesday'):
+            iso_date = line.partition('Meetings/')[2].partition('|Minutes')[0]
+            return iso_date
+    # in case we didn't find any date
+    return iso_date
+
+
 def meeting_date(mdate=None):
     '''return the meeting date if not given'''
     if not mdate:
         return date.today()
-
-
-def previous_meeting(mtoday):
-    '''return the date of the previous meeting'''
-    return (mtoday - timedelta(days=7)).isoformat()
 
 
 def meeting_minutes():
@@ -46,7 +62,7 @@ def meeting_minutes():
     return minutes_txt
 
 
-def wiki_markup():
+def wiki_markup(previous_date):
     '''return the final wiki markup'''
     mtoday = meeting_date()
     today_iso = mtoday.isoformat()
@@ -58,7 +74,7 @@ def wiki_markup():
     bugs = bugsweeksummary.summary()
     return MINUTES_TEMPLATE.format(
         meeting_date=today_iso,
-        previous_week=previous_meeting(mtoday),
+        previous_week=previous_date,
         minutes=meet_minutes,
         broken_voices=blogs,
         bugs_summary=bugs)
@@ -66,7 +82,9 @@ def wiki_markup():
 
 def main():
     '''core program'''
-    print(wiki_markup())
+    wiki_content, wiki_encoding = wiki_page(MEETINGS_URI)
+    previous_date = previous_meeting(wiki_content)
+    print(wiki_markup(previous_date))
 
 
 if __name__ == "__main__":
