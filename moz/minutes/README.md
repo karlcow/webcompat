@@ -29,5 +29,6 @@ To extract the list of last published blog posts on planet.webcompat.com
 
 ## Changes History
 
+* See commits log.
 * 2014-06-24: Adding a way to change the number of days.
 * 2013-12-16: Adding a feature for the list of blog posts on [webcompat Planet](http://planet.webcompat.com/)

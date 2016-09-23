@@ -222,5 +222,6 @@ def main():
     return final_text.encode('utf-8'), meeting_date
     # return final_text
 
+
 if __name__ == "__main__":
     sys.exit(main())

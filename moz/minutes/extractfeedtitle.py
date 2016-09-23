@@ -26,7 +26,7 @@ def broken_voices():
         postdate = item['date']
         shortdate = postdate[0:10]
         dateobj = datetime.strptime(postdate, '%Y-%m-%dT%H:%M:%SZ')
-        publishedago = todayobj-dateobj
+        publishedago = todayobj - dateobj
         if publishedago.days < 8:
             postlink = item['link']
             title = item['title']

@@ -70,8 +70,7 @@ def email_markup():
         human_date=human_date,
         meeting_date=today_iso,
         previous_week=previous_meeting(mtoday),
-        minutes=meet_minutes
-        )
+        minutes=meet_minutes)
 
 
 def main():

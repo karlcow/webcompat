@@ -77,5 +77,6 @@ def main():
     labels = extract_labels_count(github_html, LABELS_LIST)
     format_data(issues_count, labels, TEMPLATE)
 
+
 if __name__ == "__main__":
     sys.exit(main())
