@@ -10,22 +10,15 @@ For now the Makefile is the best way to create the different parts. It could cha
 
 ## Documentation
 
-To fetch the list of open bugs and closed bugs in Web Compatibility Mobile for the last 8 days.
+Once the scripts are  installed locally.
 
-    make fetchdata
+```bash
+python minutes_skeleton.py
+```
 
-To modify the number of days (here 15 days)
+will generate a text output that you can put on a new page for the wiki.
+https://wiki.mozilla.org/Compatibility/Meetings
 
-    make fetchdata FROM=-15d
-
-To extract the list of opened/closed bugs so it is ready to cut and paste in wiki.mozilla.org
-
-    make open
-    make closed
-
-To extract the list of last published blog posts on planet.webcompat.com
-
-    make feed
 
 ## Changes History
 
